@@ -28,11 +28,12 @@ for k in range(plan.nrows): #itere sobre os itens da aba
 c = plan.row_values(-1)
 c = list(filter(bool, c))
 c = list(filter(lambda x: not isinstance(x, str), c))
-
+print(c)
 # Cálculo n/m
 n = len(c)
 m = len(plan.col_values(0))-2
-
+print(n)
+print(m)
 # Matriz a[i][j]
 a=[0]*m
 for i in range(m):
@@ -42,50 +43,61 @@ for i in range(m):
         a[i]=a[i][:-1]
 
 # Vetor b[i]_min
-b=[0]*m
-for i in range(m):
+t = len(plan.row_values(0))-n
+b=[0]*t
+for i in range(t):
     b[i] = plan.col_values(n+1+i)
     b[i] = b[i][1:]
     b[i] = b[i][:-1]
 print(b)
 
-t = len(b)/2
-
+v = len(b)/2
+v = int(v)
 #----------------------Gerando Modelo---------------------------------------------------
 # Criando Problema
 modelo = pulp.LpProblem('Exemplo_01', sense = pulp.LpMinimize)
-nn = list(range(1,int((t*n)+1))) #Vetor Index
+nn = list(range(1,int((v*n)+1))) #Vetor Index
 x = pulp.LpVariable.dicts(indexs=nn , cat = pulp.LpContinuous, lowBound=0, name='x')
 
 ### ------------ Gera as Restrições
+variavel = 0
+vetor_indicex = [[0]*n]*v
+print(vetor_indicex)
+for t in range(v):
+    for j in range(n):
+        variavel = variavel + 1
+        vetor_indicex[j][t] =  variavel
+        print(vetor_indicex)
 
 
-## Restrições b_min
-if b[0][0] != "":
-    for i in range(m):
-        eq=0
-        for j in range(n):
-            eq = eq + a[i][j]*x[j+1]
-        eq = eq>=b[0][i]*Q 
-        print(f"Restrição {eq}")
-        modelo.addConstraint(eq)    
+for t in range(v):
+    ## Restrições b_min
+    if b[0][0] != "":
+        for i in range(m):
+            eq=0
+            for j in range(n):
+                eq = eq + a[i][j]*x[vetor_indicex[t][j]]
+            eq = eq>=b[0][i]*Q 
+            print(f"Restrição {eq}")
+            modelo.addConstraint(eq)    
 
-## Restrições b
-if b[1][0] != "":
-    for i in range(m):
-        eq=0
-        for j in range(n):
-            eq = eq + a[i][j]*x[j+1]
-        eq = eq<=b[1][i]*Q 
-        print(f"Restrição {eq}")
-        modelo.addConstraint(eq)    
+    ## Restrições b_max
+    if b[1][0] != "":
+        for i in range(m):
+            eq=0
+            for j in range(n):
+                eq = eq + a[i][j]*x[vetor_indicex[t][j]]
+            eq = eq<=b[1][i]*Q 
+            print(f"Restrição {eq}")
+            modelo.addConstraint(eq)    
 
-quantidade = 0
-for j in range(n):
-    quantidade = quantidade +x[j+1]
-quantidade = quantidade == 1*Q   
-print(f"Restrição {quantidade}")
-modelo.addConstraint(quantidade)
+for t in range(v):
+    quantidade = 0
+    for j in range(n):
+        quantidade = quantidade +x[vetor_indicex[t][j]]
+    quantidade = quantidade == 1*Q   
+    print(f"Restrição {quantidade}")
+    modelo.addConstraint(quantidade)
 
 
 
