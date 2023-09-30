@@ -1,7 +1,5 @@
 import pulp 
 import xlrd
-import numpy as np
-import pandas as pd
 
 fo = 0
 ##restricoes = pd.read_csv('//funcaoobjetiva.csv')
