@@ -41,9 +41,11 @@ for i in range(m):
     a[i] = list(filter(lambda x: not isinstance(x, str), a[i]))
     for k in range(len(a[i])-len(c)):
         a[i]=a[i][:-1]
-
+print(a)
 # Vetor b[i]_min
-t = len(plan.row_values(0))-n
+
+t = len(plan.row_values(0))-n-1
+print(t)
 b=[0]*t
 for i in range(t):
     b[i] = plan.col_values(n+1+i)
@@ -60,15 +62,13 @@ nn = list(range(1,int((v*n)+1))) #Vetor Index
 x = pulp.LpVariable.dicts(indexs=nn , cat = pulp.LpContinuous, lowBound=0, name='x')
 
 ### ------------ Gera as Restrições
+vetor_indicex = [[0]*n for _ in range(v)]
 variavel = 0
-vetor_indicex = [[0]*n]*v
-print(vetor_indicex)
+
 for t in range(v):
     for j in range(n):
         variavel = variavel + 1
-        vetor_indicex[j][t] =  variavel
-        print(vetor_indicex)
-
+        vetor_indicex[t][j] = variavel
 
 for t in range(v):
     ## Restrições b_min
