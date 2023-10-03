@@ -1,7 +1,6 @@
 import pulp 
 import xlrd
 import numpy as np
-import os
 #@title = Modelo Problema da Mistura
 #@autor = Guilherme Cardoso Agostinetti
 
@@ -14,25 +13,27 @@ import os
 # b[i]_min: Fração do componente i na mistura
 # c[j]: Custo de uma unidade do ingrediente i
 # Q: Quantidade de Mistura à ser produzida
-os.system('clear')
 
-arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias01.xlsx')
-plan = arq.sheet_by_name('instancia01')
-quantidade = arq.sheet_by_name('intancia01_quantidades')
+
+arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
+plan = arq.sheet_by_name('instancia02')
+quantidade = arq.sheet_by_name('intancia02_quantidades')
 
 Q = quantidade.row_values(0)[0]
-print(Q)
+print("Quantidade Itens: ",Q)
 for k in range(plan.nrows): #itere sobre os itens da aba 
     print(plan.row(k))
-
+print(" ")
 # vetor Custo C[j]
 c = plan.row_values(-1)
 c = list(filter(bool, c))
 c = list(filter(lambda x: not isinstance(x, str), c))
+print(" ")
 print(f"Coeficientes: {c}")
 # Cálculo n/m
 n = len(c)
 m = len(plan.col_values(0))-2
+print(" ")
 print(f"Número de ingredientes na mistura {n}")
 print(f"Número de Componentes {m}")
 
@@ -43,20 +44,25 @@ for i in range(m):
     a[i] = list(filter(lambda x: not isinstance(x, str), a[i]))
     for k in range(len(a[i])-len(c)):
         a[i]=a[i][:-1]
-print(a)
+print(f"Matriz a: {a}")
+print(" ")
 # Vetor b[i]_min
 
 t = len(plan.row_values(0))-n-1
-print(t)
+print(f"Quantidade de Produtos(t): {t}")
+print(" ")
 b=[0]*t
 for i in range(t):
     b[i] = plan.col_values(n+1+i)
     b[i] = b[i][1:]
     b[i] = b[i][:-1]
-print(b)
+
+print(f"Matriz b: {b}")
+print(" ")
 
 v = len(b)/2
 v = int(v)
+print(v)
 #----------------------Gerando Modelo---------------------------------------------------
 # Criando Problema
 modelo = pulp.LpProblem('Exemplo_01', sense = pulp.LpMinimize)
