@@ -1,7 +1,7 @@
 import pulp 
 import xlrd
 import numpy as np
-
+import os
 #@title = Modelo Problema da Mistura
 #@autor = Guilherme Cardoso Agostinetti
 
@@ -14,6 +14,7 @@ import numpy as np
 # b[i]_min: Fração do componente i na mistura
 # c[j]: Custo de uma unidade do ingrediente i
 # Q: Quantidade de Mistura à ser produzida
+os.system('clear')
 
 arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias01.xlsx')
 plan = arq.sheet_by_name('instancia01')
@@ -28,12 +29,13 @@ for k in range(plan.nrows): #itere sobre os itens da aba
 c = plan.row_values(-1)
 c = list(filter(bool, c))
 c = list(filter(lambda x: not isinstance(x, str), c))
-print(c)
+print(f"Coeficientes: {c}")
 # Cálculo n/m
 n = len(c)
 m = len(plan.col_values(0))-2
-print(n)
-print(m)
+print(f"Número de ingredientes na mistura {n}")
+print(f"Número de Componentes {m}")
+
 # Matriz a[i][j]
 a=[0]*m
 for i in range(m):
@@ -103,9 +105,10 @@ for t in range(v):
 
 #Gera a Função Objetiva
 fo = 0
-for j in range(n):
-    fo = fo + c[j]*x[j+1]
-print(fo)
+for t in range(v):
+    for j in range(n):
+        fo = fo + c[j]*x[vetor_indicex[t][j]]
+    print(fo)
 
 modelo.setObjective(fo)
 modelo.solve()
