@@ -15,12 +15,12 @@ import numpy as np
 # Q: Quantidade de Mistura à ser produzida
 
 
-arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
+arq = xlrd.open_workbook('C:\\Users\\Guilherme\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
 
 plan = arq.sheet_by_name('instancia02')
 quantidade = arq.sheet_by_name('intancia02_quantidades')
 
-Q = quantidade.row_values(0)[0] # Pega o valor da Linha 0 Posição 0
+Q = quantidade.row_values(0) # Pega o valor da Linha 0 Posição 0
 print("Quantidade Itens: ",Q)
 for k in range(plan.nrows): #itere sobre os itens da aba 
     print(plan.row(k))
@@ -79,32 +79,33 @@ for t in range(v):
         variavel = variavel + 1
         vetor_indicex[t][j] = variavel
 
+ib = 0
 for t in range(v):
     ## Restrições b_min
-    if b[0][0] != "":
+    if b[ib][0] != "":
         for i in range(m):
             eq=0
             for j in range(n):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
-            eq = eq>=b[0][i]*Q 
+            eq = eq>=b[ib][i]*Q[t] 
             print(f"Restrição {eq}")
             modelo.addConstraint(eq)    # Insere a restrição
-
+    ib += 1
     ## Restrições b_max
-    if b[1][0] != "":
+    if b[ib][1] != "":
         for i in range(m):
             eq=0
             for j in range(n):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
-            eq = eq<=b[1][i]*Q 
+            eq = eq<=b[ib][i]*Q[t]
             print(f"Restrição {eq}")
             modelo.addConstraint(eq)   # Insere a restrição 
-
+    ib += 1
 for t in range(v): # Limite da Quantidade Máxima.
     quantidade = 0
     for j in range(n):
         quantidade = quantidade +x[vetor_indicex[t][j]]
-    quantidade = quantidade == 1*Q   
+    quantidade = quantidade == 1*Q[t] 
     print(f"Restrição {quantidade}")
     modelo.addConstraint(quantidade) # Insere a restrição
 
