@@ -16,23 +16,25 @@ import numpy as np
 
 
 arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
+
 plan = arq.sheet_by_name('instancia02')
 quantidade = arq.sheet_by_name('intancia02_quantidades')
 
-Q = quantidade.row_values(0)[0]
+Q = quantidade.row_values(0)[0] # Pega o valor da Linha 0 Posição 0
 print("Quantidade Itens: ",Q)
 for k in range(plan.nrows): #itere sobre os itens da aba 
     print(plan.row(k))
 print(" ")
 # vetor Custo C[j]
-c = plan.row_values(-1)
-c = list(filter(bool, c))
-c = list(filter(lambda x: not isinstance(x, str), c))
+c = plan.row_values(-1) # Importa os VAlores da Ultima Linha da plan.
+c = list(filter(bool, c)) # Retira todos os espaços vazios.
+c = list(filter(lambda x: not isinstance(x, str), c)) # Filtra todos os Caracteres
 print(" ")
 print(f"Coeficientes: {c}")
+
 # Cálculo n/m
-n = len(c)
-m = len(plan.col_values(0))-2
+n = len(c) # Número de ingredientes na mistura
+m = len(plan.col_values(0))-2 #Número de Componentes
 print(" ")
 print(f"Número de ingredientes na mistura {n}")
 print(f"Número de Componentes {m}")
@@ -41,13 +43,13 @@ print(f"Número de Componentes {m}")
 a=[0]*m
 for i in range(m):
     a[i] = plan.row_values(i+1)
-    a[i] = list(filter(lambda x: not isinstance(x, str), a[i]))
+    a[i] = list(filter(lambda x: not isinstance(x, str), a[i])) #Filtra Str
     for k in range(len(a[i])-len(c)):
         a[i]=a[i][:-1]
 print(f"Matriz a: {a}")
 print(" ")
-# Vetor b[i]_min
 
+# Vetor b[i]_min
 t = len(plan.row_values(0))-n-1
 print(f"Quantidade de Produtos(t): {t}")
 print(" ")
@@ -60,19 +62,18 @@ for i in range(t):
 print(f"Matriz b: {b}")
 print(" ")
 
-v = len(b)/2
+v = len(b)/2 # Quantidade de Produtos Fabricados
 v = int(v)
 print(v)
 #----------------------Gerando Modelo---------------------------------------------------
 # Criando Problema
-modelo = pulp.LpProblem('Exemplo_01', sense = pulp.LpMinimize)
+modelo = pulp.LpProblem('Exemplo_01', sense = pulp.LpMinimize) #Cria o Modelo para Resolução
 nn = list(range(1,int((v*n)+1))) #Vetor Index
-x = pulp.LpVariable.dicts(indexs=nn , cat = pulp.LpContinuous, lowBound=0, name='x')
+x = pulp.LpVariable.dicts(indexs=nn , cat = pulp.LpContinuous, lowBound=0, name='x') #Cria as Variáveis
 
 ### ------------ Gera as Restrições
-vetor_indicex = [[0]*n for _ in range(v)]
+vetor_indicex = [[0]*n for _ in range(v)] # Vetor para chamar o X.
 variavel = 0
-
 for t in range(v):
     for j in range(n):
         variavel = variavel + 1
@@ -87,7 +88,7 @@ for t in range(v):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
             eq = eq>=b[0][i]*Q 
             print(f"Restrição {eq}")
-            modelo.addConstraint(eq)    
+            modelo.addConstraint(eq)    # Insere a restrição
 
     ## Restrições b_max
     if b[1][0] != "":
@@ -97,15 +98,15 @@ for t in range(v):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
             eq = eq<=b[1][i]*Q 
             print(f"Restrição {eq}")
-            modelo.addConstraint(eq)    
+            modelo.addConstraint(eq)   # Insere a restrição 
 
-for t in range(v):
+for t in range(v): # Limite da Quantidade Máxima.
     quantidade = 0
     for j in range(n):
         quantidade = quantidade +x[vetor_indicex[t][j]]
     quantidade = quantidade == 1*Q   
     print(f"Restrição {quantidade}")
-    modelo.addConstraint(quantidade)
+    modelo.addConstraint(quantidade) # Insere a restrição
 
 
 
@@ -116,8 +117,8 @@ for t in range(v):
         fo = fo + c[j]*x[vetor_indicex[t][j]]
     print(fo)
 
-modelo.setObjective(fo)
-modelo.solve()
+modelo.setObjective(fo)# Insera a função objetiva no Problema
+modelo.solve() # Chama a resolução do Problema
 
-x_sol = {i: x[i].value() for i in nn}
+x_sol = {i: x[i].value() for i in nn} # Print Respota
 print(f'x = {x_sol}')
