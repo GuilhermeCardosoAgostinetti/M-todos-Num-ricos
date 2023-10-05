@@ -17,8 +17,8 @@ import numpy as np
 
 arq = xlrd.open_workbook('C:\\Users\\Guilherme\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
 
-plan = arq.sheet_by_name('instancia02')
-quantidade = arq.sheet_by_name('intancia02_quantidades')
+plan = arq.sheet_by_name('instancia04')
+quantidade = arq.sheet_by_name('intancia04_quantidades')
 
 Q = quantidade.row_values(0) # Pega o valor da Linha 0 Posição 0
 print("Quantidade Itens: ",Q)
@@ -82,8 +82,9 @@ for t in range(v):
 ib = 0
 for t in range(v):
     ## Restrições b_min
-    if b[ib][0] != "":
-        for i in range(m):
+    
+    for i in range(m):
+        if b[ib][i] != "":
             eq=0
             for j in range(n):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
@@ -92,8 +93,9 @@ for t in range(v):
             modelo.addConstraint(eq)    # Insere a restrição
     ib += 1
     ## Restrições b_max
-    if b[ib][1] != "":
-        for i in range(m):
+
+    for i in range(m):
+        if b[ib][i] != "":
             eq=0
             for j in range(n):
                 eq = eq + a[i][j]*x[vetor_indicex[t][j]]
