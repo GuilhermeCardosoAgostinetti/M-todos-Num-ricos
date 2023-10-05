@@ -15,7 +15,7 @@ import numpy as np
 # Q: Quantidade de Mistura à ser produzida
 
 
-arq = xlrd.open_workbook('C:\\Users\\Guilherme\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
+arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
 
 plan = arq.sheet_by_name('instancia02')
 quantidade = arq.sheet_by_name('intancia02_quantidades')
