@@ -17,8 +17,8 @@ import numpy as np
 
 arq = xlrd.open_workbook('C:\\Users\\Guilherme\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
 
-plan = arq.sheet_by_name('instancia04')
-quantidade = arq.sheet_by_name('intancia04_quantidades')
+plan = arq.sheet_by_name('instancia02')
+quantidade = arq.sheet_by_name('intancia02_quantidades')
 
 Q = quantidade.row_values(0) # Pega o valor da Linha 0 Posição 0
 print("Quantidade Itens: ",Q)
