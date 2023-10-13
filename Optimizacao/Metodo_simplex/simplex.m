@@ -1,3 +1,4 @@
+
 %%% ALGORITMO MÉTODO SIMPLEX
 clear, clc
 
