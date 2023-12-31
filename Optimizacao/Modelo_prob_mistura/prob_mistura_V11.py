@@ -1,5 +1,5 @@
 import pulp 
-import xlrd
+import 
 import numpy as np
 #@title = Modelo Problema da Mistura
 #@autor = Guilherme Cardoso Agostinetti
@@ -15,10 +15,9 @@ import numpy as np
 # Q: Quantidade de Mistura à ser produzida
 
 
-arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
-
-plan = arq.sheet_by_name('instancia02')
-quantidade = arq.sheet_by_name('intancia02_quantidades')
+arq = xlrd.open_workbook('C:\Users\guilh\OneDrive\Documentos\GitHub\Metodos_Numericos\Optimizacao\Modelo_prob_mistura\instacias.xlsx')
+plan = arq.sheet_by_name('instancia01')
+quantidade = arq.sheet_by_name('intancia01_quantidades')
 
 Q = quantidade.row_values(0) # Pega o valor da Linha 0 Posição 0
 print("Quantidade Itens: ",Q)

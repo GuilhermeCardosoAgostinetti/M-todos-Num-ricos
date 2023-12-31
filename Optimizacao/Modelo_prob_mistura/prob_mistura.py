@@ -15,7 +15,7 @@ import numpy as np
 # c[j]: Custo de uma unidade do ingrediente i
 # Q: Quantidade de Mistura à ser produzida
 
-arq = xlrd.open_workbook('C:\\Users\\Guilherme Cardoso A\\Documents\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias01.xlsx')
+arq = xlrd.open_workbook('C:\\Users\\guilh\\OneDrive\\Documentos\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instacias.xlsx')
 plan = arq.sheet_by_name('instancia01')
 quantidade = arq.sheet_by_name('intancia01_quantidades')
 

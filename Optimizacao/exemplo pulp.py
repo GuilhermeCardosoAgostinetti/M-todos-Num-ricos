@@ -13,9 +13,9 @@ x = pulp.LpVariable.dicts(indexs=[1,2,3,4,5,6] , cat = pulp.LpContinuous, lowBou
 ### ------------ Gera as Restrições
 
 modelo.addConstraint(2*x[1]+6*x[2]+3*x[3]+2*x[4]+3*x[5]+4*x[6]<=600)   
-      
 modelo.setObjective(x[1]+2*x[2]+4*x[3]+5*x[5]+x[6])
 modelo.solve()
+
 
 x_sol = {i: x[i].value() for i in [1,2,3,4,5,6]}
 print(f'x = {x_sol}')
