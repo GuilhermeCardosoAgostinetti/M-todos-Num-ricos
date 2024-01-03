@@ -1,5 +1,5 @@
 import pulp 
-import 
+import xlrd
 import numpy as np
 #@title = Modelo Problema da Mistura
 #@autor = Guilherme Cardoso Agostinetti
@@ -15,7 +15,7 @@ import numpy as np
 # Q: Quantidade de Mistura à ser produzida
 
 
-arq = xlrd.open_workbook('C:\Users\guilh\OneDrive\Documentos\GitHub\Metodos_Numericos\Optimizacao\Modelo_prob_mistura\instacias.xlsx')
+arq = xlrd.open_workbook('C:\\Users\\guilh\\Documentos\\GitHub\\Metodos_Numericos\\Optimizacao\\Modelo_prob_mistura\\instancias.xlsx')
 plan = arq.sheet_by_name('instancia01')
 quantidade = arq.sheet_by_name('intancia01_quantidades')
 
